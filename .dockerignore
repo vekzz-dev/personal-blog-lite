@@ -1,0 +1,29 @@
+# Build artifacts
+.gradle/
+build/
+out/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Docs (not needed in image)
+README.md
+AGENTS.md
+
+# Gradle wrapper is needed, but .bat is not
+gradlew.bat
+
+# Other
+.kotlin/
+.nb-gradle/
