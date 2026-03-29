@@ -1,0 +1,42 @@
+services:
+  # ── MariaDB ────────────────────────────────────────────────
+  db:
+    image: mariadb:11.7
+    container_name: blog-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: root_pass
+      MARIADB_DATABASE: blog_lite
+      MARIADB_USER: blog_user
+      MARIADB_PASSWORD: blog_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # ── Aplicación Vaadin ─────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blog-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mariadb://db:3306/blog_lite
+      DB_USER: blog_user
+      DB_PASSWORD: blog_pass
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
+    driver: local
