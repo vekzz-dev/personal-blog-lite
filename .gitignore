@@ -40,5 +40,8 @@ bin/
 ### VS Code ###
 .vscode/
 
+### Vaadin generated frontend ###
+src/main/frontend/
+
 ### Mac OS ###
 .DS_Store
