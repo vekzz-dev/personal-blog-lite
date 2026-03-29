@@ -61,6 +61,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'build/generated-sources/jooq'
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
 }
