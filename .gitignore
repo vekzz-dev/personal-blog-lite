@@ -40,6 +40,9 @@ bin/
 ### VS Code ###
 .vscode/
 
+### Logs ###
+logs/
+
 ### Vaadin generated frontend ###
 src/main/frontend/
 
