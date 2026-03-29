@@ -1,0 +1,106 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.vaadin' version '25.1.0'
+    id 'org.jooq.jooq-codegen-gradle' version '3.21.1'
+}
+
+group = 'io.vekzz-dev'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    vaadinVersion = '25.1.0'
+    jooqVersion = '3.21.1'
+}
+
+dependencies {
+    // === Vaadin 25 (Flow — Java puro, sin HTML/CSS/JS separado) ===
+    implementation "com.vaadin:vaadin-core:${vaadinVersion}"
+    // Vaadin Dev Tools (solo en desarrollo, NO en producción)
+    if (!vaadin.productionMode.get()) {
+        implementation "com.vaadin:vaadin-dev:${vaadinVersion}"
+    }
+
+    // === Servidor embebido: vaadin-boot (Jetty 12) ===
+    implementation 'com.github.mvysny.vaadin-boot:vaadin-boot:13.6'
+
+    // === Base de datos ===
+    // MariaDB JDBC Driver
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.7'
+    // Connection pooling
+    implementation 'com.zaxxer:HikariCP:7.0.2'
+
+    // === jOOQ (Type-safe SQL query builder) ===
+    implementation "org.jooq:jooq:${jooqVersion}"
+    // Driver para codegen (se conecta a la DB para generar código)
+    jooqCodegen 'org.mariadb.jdbc:mariadb-java-client:3.5.7'
+
+    // === Flyway (Schema migrations versionadas) ===
+    implementation 'org.flywaydb:flyway-core:12.2.0'
+    implementation 'org.flywaydb:flyway-mysql:12.2.0'
+
+    // === Markdown Parser (CommonMark — ligero, estándar) ===
+    implementation 'org.commonmark:commonmark:0.27.1'
+
+    // === Logging (SLF4J + Logback) ===
+    implementation 'ch.qos.logback:logback-classic:1.5.32'
+
+    // === Testing ===
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core:3.27.7'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'io.vekzzdev.Main'
+}
+
+// Vaadin: desarrollo por defecto, producción con -Pvaadin.productionMode
+vaadin {
+    productionMode = false
+}
+
+// jOOQ Code Generation: corre DESPUÉS de que Flyway migró el schema.
+// Ejecutar con: ./gradlew jooqCodegen
+// Requiere que MariaDB esté corriendo (docker compose up)
+jooq {
+    configuration {
+        jdbc {
+            driver = 'org.mariadb.jdbc.Driver'
+            url = System.getenv('DB_URL') ?: 'jdbc:mariadb://localhost:3306/blog_db'
+            user = System.getenv('DB_USER') ?: 'blog_user'
+            password = System.getenv('DB_PASSWORD') ?: 'blog_pass'
+        }
+        generator {
+            database {
+                name = 'org.jooq.meta.mariadb.MariaDBDatabase'
+                inputSchema = 'blog_db'
+                includes = '.*'
+                excludes = 'flyway_schema_history'
+            }
+            generate {
+                records = true
+                pojos = true
+                daos = true
+            }
+            target {
+                packageName = 'io.vekzzdev.generated.jooq'
+                directory = 'build/generated-sources/jooq'
+            }
+        }
+    }
+}
