@@ -66,7 +66,7 @@ test {
 }
 
 application {
-    mainClass = 'io.vekzzdev.Main'
+    mainClass = 'io.vekzzdev.personal_blog_lite.Main'
 }
 
 // Vaadin: desarrollo por defecto, producción con -Pvaadin.productionMode
@@ -81,14 +81,14 @@ jooq {
     configuration {
         jdbc {
             driver = 'org.mariadb.jdbc.Driver'
-            url = System.getenv('DB_URL') ?: 'jdbc:mariadb://localhost:3306/blog_db'
+            url = System.getenv('DB_URL') ?: 'jdbc:mariadb://localhost:3306/blog_lite'
             user = System.getenv('DB_USER') ?: 'blog_user'
             password = System.getenv('DB_PASSWORD') ?: 'blog_pass'
         }
         generator {
             database {
                 name = 'org.jooq.meta.mariadb.MariaDBDatabase'
-                inputSchema = 'blog_db'
+                inputSchema = 'blog_lite'
                 includes = '.*'
                 excludes = 'flyway_schema_history'
             }
