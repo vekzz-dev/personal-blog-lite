@@ -35,10 +35,10 @@ public class JooqPostRepository implements PostRepository {
     @Override
     public Post insert(Post post) {
         return dsl.insertInto(POSTS)
-                .set(POSTS.TITLE, post.title())
-                .set(POSTS.CONTENT, post.content())
-                .set(POSTS.CREATED_AT, post.created_at())
-                .set(POSTS.UPDATED_AT, post.updated_at())
+                .set(POSTS.TITLE, post.getTitle())
+                .set(POSTS.CONTENT, post.getContent())
+                .set(POSTS.CREATED_AT, post.getCreatedAt())
+                .set(POSTS.UPDATED_AT, post.getUpdatedAt())
                 .returning()
                 .fetchOneInto(Post.class);
     }
@@ -46,11 +46,11 @@ public class JooqPostRepository implements PostRepository {
     @Override
     public int update(Post post) {
         return dsl.update(POSTS)
-                .set(POSTS.TITLE, post.title())
-                .set(POSTS.CONTENT, post.content())
-                .set(POSTS.CREATED_AT, post.created_at())
-                .set(POSTS.UPDATED_AT, post.updated_at())
-                .where(POSTS.ID.eq(post.id()))
+                .set(POSTS.TITLE, post.getTitle())
+                .set(POSTS.CONTENT, post.getContent())
+                .set(POSTS.CREATED_AT, post.getCreatedAt())
+                .set(POSTS.UPDATED_AT, post.getUpdatedAt())
+                .where(POSTS.ID.eq(post.getId()))
                 .execute();
     }
 

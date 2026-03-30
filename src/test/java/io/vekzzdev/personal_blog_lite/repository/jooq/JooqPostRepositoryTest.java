@@ -47,11 +47,11 @@ class JooqPostRepositoryTest {
         var result = buildDsl.newResult(POSTS);
         for (Post post : posts) {
             var record = buildDsl.newRecord(POSTS);
-            record.set(POSTS.ID, post.id());
-            record.set(POSTS.TITLE, post.title());
-            record.set(POSTS.CONTENT, post.content());
-            record.set(POSTS.CREATED_AT, post.created_at());
-            record.set(POSTS.UPDATED_AT, post.updated_at());
+            record.set(POSTS.ID, post.getId());
+            record.set(POSTS.TITLE, post.getTitle());
+            record.set(POSTS.CONTENT, post.getContent());
+            record.set(POSTS.CREATED_AT, post.getCreatedAt());
+            record.set(POSTS.UPDATED_AT, post.getUpdatedAt());
             result.add(record);
         }
         return new MockResult(result.size(), result);
@@ -144,9 +144,9 @@ class JooqPostRepositoryTest {
             Post result = repository.insert(toInsert);
 
             assertThat(result).isNotNull();
-            assertThat(result.id()).isEqualTo(1);
-            assertThat(result.title()).isEqualTo("New Post");
-            assertThat(result.content()).isEqualTo("New Content");
+            assertThat(result.getId()).isEqualTo(1);
+            assertThat(result.getTitle()).isEqualTo("New Post");
+            assertThat(result.getContent()).isEqualTo("New Content");
         }
     }
 
