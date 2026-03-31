@@ -14,7 +14,7 @@ RUN chmod +x gradlew
 # Descargar dependencias (cache layer — solo cambia si cambia build.gradle)
 RUN ./gradlew dependencies --no-daemon || true
 
-# Copiar el resto del código fuente
+# Copiar el resto del código fuente (incluye jOOQ generado en src/main/java)
 COPY src/ src/
 
 # Build en modo producción (Vaadin compila el frontend bundle)
