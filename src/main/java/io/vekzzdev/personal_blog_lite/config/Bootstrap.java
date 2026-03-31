@@ -12,6 +12,10 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.vekzzdev.personal_blog_lite.repository.jooq.JooqPostRepository;
+import io.vekzzdev.personal_blog_lite.service.MarkdownService;
+import io.vekzzdev.personal_blog_lite.service.PostService;
+
 import javax.sql.DataSource;
 
 @WebListener
@@ -20,6 +24,7 @@ public class Bootstrap implements ServletContextListener {
     private static final Logger log = LoggerFactory.getLogger(Bootstrap.class);
 
     private static HikariDataSource dataSource;
+    private static PostService postService;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -46,6 +51,13 @@ public class Bootstrap implements ServletContextListener {
         flyway.migrate();
         log.info("Flyway migrations applied successfully");
 
+        // 3. Application services (composition root)
+        postService = new PostService(
+                new JooqPostRepository(getDslContext()),
+                new MarkdownService()
+        );
+        log.info("Application services initialized");
+
         log.info("personal-blog-lite initialized");
     }
 
@@ -67,6 +79,13 @@ public class Bootstrap implements ServletContextListener {
 
     public static DSLContext getDslContext() {
         return DSL.using(getDataSource(), SQLDialect.MARIADB);
+    }
+
+    public static PostService getPostService() {
+        if (postService == null) {
+            throw new IllegalStateException("PostService not initialized. Is Bootstrap running?");
+        }
+        return postService;
     }
 
     private static String getEnvOrDefault(String key, String defaultValue) {
