@@ -110,7 +110,7 @@ jooq {
             }
             target {
                 packageName = 'io.vekzzdev.generated.jooq'
-                directory = 'build/generated-sources/jooq'
+                directory = 'src/main/java'
             }
         }
     }
