@@ -1,0 +1,62 @@
+.home-view__section-title {
+  margin: 0 0 var(--lumo-space-l) 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  align-self: flex-start;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Post card */
+.post-card {
+  cursor: pointer;
+}
+
+.post-card__title {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.post-card__date {
+  color: var(--lumo-secondary-text-color);
+}
+
+.post-card__preview {
+  color: var(--lumo-secondary-text-color);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.post-card__read-more {
+  color: var(--lumo-primary-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.post-card__arrow {
+  color: var(--lumo-primary-color);
+  font-size: 0.75rem;
+}
+
+/* Empty state */
+.empty-state {
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state__icon {
+  font-size: 3rem;
+  color: var(--lumo-contrast-30pct);
+}
+
+.empty-state__message {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--lumo-secondary-text-color);
+}
+
+.empty-state__hint {
+  font-size: 0.875rem;
+  color: var(--lumo-tertiary-text-color);
+}

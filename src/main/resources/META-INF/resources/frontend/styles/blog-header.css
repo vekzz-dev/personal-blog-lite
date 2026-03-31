@@ -1,0 +1,21 @@
+.blog-header {
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+}
+
+.blog-header__icon {
+  color: var(--lumo-primary-color);
+  font-size: 1.5em;
+}
+
+.blog-header__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.blog-header__sign-in {
+  font-weight: 600;
+}
