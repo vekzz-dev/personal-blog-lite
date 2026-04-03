@@ -93,8 +93,8 @@ jooq {
         jdbc {
             driver = 'org.mariadb.jdbc.Driver'
             url = System.getenv('DB_URL') ?: 'jdbc:mariadb://localhost:3306/blog_lite'
-            user = System.getenv('DB_USER') ?: 'blog_user'
-            password = System.getenv('DB_PASSWORD') ?: 'blog_pass'
+user = System.getenv('DB_USER')
+        password = System.getenv('DB_PASSWORD')
         }
         generator {
             database {
@@ -111,7 +111,22 @@ jooq {
             target {
                 packageName = 'io.vekzzdev.generated.jooq'
                 directory = 'src/main/java'
-            }
-        }
+}
     }
+}
+
+// Tarea personalizada para ejecutar con variables de entorno específicas
+task runDev(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'io.vekzzdev.personal_blog_lite.Main'
+    environment 'ADMIN_USERNAME', System.getenv('ADMIN_USERNAME')
+    environment 'ADMIN_PASSWORD', System.getenv('ADMIN_PASSWORD') ?: 'dev123'
+}
+
+task runProd(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'io.vekzzdev.personal_blog_lite.Main'
+    environment 'ADMIN_USERNAME', System.getenv('ADMIN_USERNAME')
+    environment 'ADMIN_PASSWORD', System.getenv('ADMIN_PASSWORD')
+}
 }
