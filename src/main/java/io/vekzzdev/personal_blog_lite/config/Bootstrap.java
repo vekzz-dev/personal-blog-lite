@@ -2,6 +2,9 @@ package io.vekzzdev.personal_blog_lite.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.vekzzdev.personal_blog_lite.repository.jooq.JooqPostRepository;
+import io.vekzzdev.personal_blog_lite.service.MarkdownService;
+import io.vekzzdev.personal_blog_lite.service.PostService;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -11,10 +14,6 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.vekzzdev.personal_blog_lite.repository.jooq.JooqPostRepository;
-import io.vekzzdev.personal_blog_lite.service.MarkdownService;
-import io.vekzzdev.personal_blog_lite.service.PostService;
 
 import javax.sql.DataSource;
 
@@ -32,9 +31,9 @@ public class Bootstrap implements ServletContextListener {
 
         // 1. HikariCP connection pool
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(getEnvOrDefault("DB_URL", "jdbc:mariadb://localhost:3306/blog_lite"));
-        hikariConfig.setUsername(getEnvOrDefault("DB_USER", "blog_user"));
-        hikariConfig.setPassword(getEnvOrDefault("DB_PASSWORD", "blog_pass"));
+        hikariConfig.setJdbcUrl(getRequiredEnv("DB_URL"));
+        hikariConfig.setUsername(getRequiredEnv("DB_USER"));
+        hikariConfig.setPassword(getRequiredEnv("DB_PASSWORD"));
         hikariConfig.setDriverClassName("org.mariadb.jdbc.Driver");
         hikariConfig.setMaximumPoolSize(10);
         hikariConfig.setMinimumIdle(2);
@@ -48,8 +47,29 @@ public class Bootstrap implements ServletContextListener {
                 .dataSource(dataSource)
                 .locations("classpath:db/migration")
                 .load();
-        flyway.migrate();
-        log.info("Flyway migrations applied successfully");
+        
+        try {
+            flyway.migrate();
+            log.info("Flyway migrations applied successfully");
+        } catch (org.flywaydb.core.api.FlywayException e) {
+            if (e.getMessage() != null && (e.getMessage().contains("Checksum mismatch") || e.getMessage().contains("checksum mismatch"))) {
+                log.warn("Flyway checksum mismatch detected. Attempting repair...");
+                try {
+                    flyway.repair();
+                    log.info("Flyway repair completed successfully");
+                    
+                    // Try migration again after repair
+                    flyway.migrate();
+                    log.info("Flyway migrations applied successfully after repair");
+                } catch (Exception repairEx) {
+                    log.error("Flyway repair failed: {}", repairEx.getMessage());
+                    throw new RuntimeException("Failed to repair Flyway checksum mismatch", repairEx);
+                }
+            } else {
+                log.error("Flyway migration failed: {}", e.getMessage());
+                throw new RuntimeException("Failed to apply Flyway migrations", e);
+            }
+        }
 
         // 3. Application services (composition root)
         postService = new PostService(
@@ -88,8 +108,11 @@ public class Bootstrap implements ServletContextListener {
         return postService;
     }
 
-    private static String getEnvOrDefault(String key, String defaultValue) {
+    private static String getRequiredEnv(String key) {
         String value = System.getenv(key);
-        return value != null ? value : defaultValue;
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalStateException("Required environment variable '" + key + "' is not set or is empty");
+        }
+        return value;
     }
 }
