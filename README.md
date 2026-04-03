@@ -35,7 +35,7 @@ A lightweight personal blog with public read access and admin panel for content 
 ### 1. Clone and Configure
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/vekzz-dev/personal-blog-lite.git
 cp .env.example .env
 ```
 
@@ -278,7 +278,7 @@ This section covers local development workflows, testing, and build commands.
 1. **Clone the repository:**
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/vekzz-dev/personal-blog-lite.git
 cd personal-blog-lite
 ```
 
