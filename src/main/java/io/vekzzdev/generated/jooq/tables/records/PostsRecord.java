@@ -5,11 +5,10 @@ package io.vekzzdev.generated.jooq.tables.records;
 
 
 import io.vekzzdev.generated.jooq.tables.Posts;
-
-import java.time.LocalDateTime;
-
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import java.time.LocalDateTime;
 
 
 /**
