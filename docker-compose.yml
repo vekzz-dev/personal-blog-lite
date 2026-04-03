@@ -1,42 +1,69 @@
+version: '3.8'
+
 services:
   # ── MariaDB ────────────────────────────────────────────────
   db:
-    image: mariadb:11.7
+    image: mariadb:${MARIADB_VERSION:-11.7}
     container_name: blog-db
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: root_pass
-      MARIADB_DATABASE: blog_lite
-      MARIADB_USER: blog_user
-      MARIADB_PASSWORD: blog_pass
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 15s
+      start_period: 30s
+    networks:
+      - blog-network
 
   # ── Aplicación Vaadin ─────────────────────────────────────
   app:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - BUILD_VERSION=1.0.0
     container_name: blog-app
     restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
-      DB_URL: jdbc:mariadb://db:3306/blog_lite
-      DB_USER: blog_user
-      DB_PASSWORD: blog_pass
+      # ── Database ──────────────────────────────────────────
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      
+      # ── Admin Auth ────────────────────────────────────────
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      
+      # ── JVM Options ───────────────────────────────────────
+      JAVA_OPTS: "-Xmx512m -Xms256m"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - blog-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
 volumes:
   db_data:
     driver: local
+
+networks:
+  blog-network:
+    driver: bridge
