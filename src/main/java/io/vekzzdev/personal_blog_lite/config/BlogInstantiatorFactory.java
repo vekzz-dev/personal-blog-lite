@@ -6,6 +6,9 @@ import com.vaadin.flow.di.InstantiatorFactory;
 import com.vaadin.flow.server.VaadinService;
 import io.vekzzdev.personal_blog_lite.ui.view.HomeView;
 import io.vekzzdev.personal_blog_lite.ui.view.PostDetailView;
+import io.vekzzdev.personal_blog_lite.ui.view.admin.AdminDashboardView;
+import io.vekzzdev.personal_blog_lite.ui.view.admin.NewPostView;
+import io.vekzzdev.personal_blog_lite.ui.view.admin.PostFormView;
 
 /**
  * Custom Vaadin Instantiator that wires view dependencies via constructor injection.
@@ -31,6 +34,15 @@ public class BlogInstantiatorFactory implements InstantiatorFactory {
             }
             if (type == PostDetailView.class) {
                 return type.cast(new PostDetailView(Bootstrap.getPostService()));
+            }
+            if (type == AdminDashboardView.class) {
+                return type.cast(new AdminDashboardView(Bootstrap.getPostService()));
+            }
+            if (type == PostFormView.class) {
+                return type.cast(new PostFormView(Bootstrap.getPostService()));
+            }
+            if (type == NewPostView.class) {
+                return type.cast(new NewPostView(Bootstrap.getPostService()));
             }
             return super.getOrCreate(type);
         }
