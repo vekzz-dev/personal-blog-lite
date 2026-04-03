@@ -69,23 +69,23 @@ Click the **Admin** button in the header or navigate to `/admin/dashboard`. You'
 
 ### Home Page
 
-![Home Page](assets/home1.png)
-![Home Page](assets/home2.png)
+<img src="assets/home1.png" width="600" alt="Home Page">
+<img src="assets/home2.png" width="600" alt="Home Page">
 
 ### Post Detail
 
-![Post View](assets/post_view1.png)
-![Post View](assets/post_view2.png)
+<img src="assets/post_view1.png" width="600" alt="Post View">
+<img src="assets/post_view2.png" width="600" alt="Post View">
 
 ### Admin Dashboard
 
-![Admin Dashboard](assets/dashboard_admin.png)
+<img src="assets/dashboard_admin.png" width="600" alt="Admin Dashboard">
 
 ### Post Management
 
-![New Post](assets/new_post.png)
-![Edit Post](assets/edit_post.png)
-![Delete Post](assets/delete_post.png)
+<img src="assets/new_post.png" width="600" alt="New Post">
+<img src="assets/edit_post.png" width="600" alt="Edit Post">
+<img src="assets/delete_post.png" width="600" alt="Delete Post">
 
 ## Project Structure
 
