@@ -2,6 +2,9 @@
 
 A lightweight personal blog with public read access and admin panel for content management. Built with Vaadin 25, Java 21, and MariaDB.
 
+> [!NOTE]
+> This project is based on the [Personal Blog Challenge](https://roadmap.sh/projects/personal-blog) from roadmap.sh.
+
 ## Features
 
 - **Public Views**: Home page with post list, individual post detail view
