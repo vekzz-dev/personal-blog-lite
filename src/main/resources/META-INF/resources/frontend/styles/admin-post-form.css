@@ -1,0 +1,26 @@
+.admin-post-form__header {
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  background-color: var(--lumo-base-color);
+}
+
+.admin-post-form__title {
+  margin: 0;
+  color: var(--lumo-header-text-color);
+}
+
+.admin-post-form__container {
+  padding: var(--lumo-space-l) var(--lumo-space-m);
+}
+
+.admin-post-form__title-field {
+  margin-bottom: var(--lumo-space-m);
+}
+
+.admin-post-form__content-area {
+  margin-bottom: var(--lumo-space-m);
+}
+
+.admin-post-form__actions {
+  padding-top: var(--lumo-space-s);
+}
