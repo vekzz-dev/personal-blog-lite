@@ -36,6 +36,7 @@ A lightweight personal blog with public read access and admin panel for content 
 
 ```bash
 git clone https://github.com/vekzz-dev/personal-blog-lite.git
+cd personal-blog-lite
 cp .env.example .env
 ```
 
