@@ -48,3 +48,17 @@ src/main/frontend/
 
 ### Mac OS ###
 .DS_Store
+
+# ── Environment Variables (NUNCA commitear contraseñas) ────
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+
+# ── Logs de la aplicación ───────────────────────────────────
+logs/
+*.log
+
+# ── Docker ──────────────────────────────────────────────────
+docker-compose.override.yml
