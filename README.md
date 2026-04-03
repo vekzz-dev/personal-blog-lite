@@ -437,4 +437,4 @@ tail -f logs/application.log
 
 ## License
 
-MIT
+MIT License - see [LICENSE](LICENSE) for details.
