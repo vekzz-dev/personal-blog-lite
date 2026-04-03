@@ -1,0 +1,15 @@
+.admin-dashboard__header {
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  background-color: var(--lumo-base-color);
+}
+
+.admin-dashboard__title {
+  margin: 0;
+  color: var(--lumo-header-text-color);
+}
+
+.admin-dashboard__grid {
+  margin: 0;
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+}

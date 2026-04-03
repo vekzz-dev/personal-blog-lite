@@ -5,9 +5,9 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.server.VaadinServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @CssImport("./styles/blog-header.css")
 public class BlogHeader extends HorizontalLayout {
@@ -34,14 +34,19 @@ public class BlogHeader extends HorizontalLayout {
 
         branding.add(bookIcon, title);
 
-        Button signIn = new Button("Sign in", VaadinIcon.SIGN_IN.create());
-        signIn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        signIn.addClassName("blog-header__sign-in");
-        signIn.addClickListener(e -> {
-            Notification.show("Sign in clicked")
-                    .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        Button adminButton = new Button("Admin", VaadinIcon.LOCK.create());
+        adminButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        adminButton.addClassName("blog-header__admin");
+        adminButton.addClickListener(e -> {
+            adminButton.getUI().ifPresent(ui -> {
+                // Forzar redirección externa para activar BasicAuthFilter
+                HttpServletRequest request = VaadinServletRequest.getCurrent().getHttpServletRequest();
+                String contextPath = request.getContextPath();
+                String adminUrl = contextPath + "/admin/dashboard";
+                ui.getPage().setLocation(adminUrl);
+            });
         });
 
-        add(branding, signIn);
+        add(branding, adminButton);
     }
 }

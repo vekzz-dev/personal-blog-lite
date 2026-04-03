@@ -6,13 +6,12 @@ package io.vekzzdev.generated.jooq.tables.daos;
 
 import io.vekzzdev.generated.jooq.tables.Posts;
 import io.vekzzdev.generated.jooq.tables.records.PostsRecord;
+import org.jooq.Configuration;
+import org.jooq.impl.DAOImpl;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import org.jooq.Configuration;
-import org.jooq.impl.DAOImpl;
 
 
 /**

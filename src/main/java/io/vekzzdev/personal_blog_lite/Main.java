@@ -3,7 +3,6 @@ package io.vekzzdev.personal_blog_lite;
 import com.github.mvysny.vaadinboot.VaadinBoot;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.page.AppShellConfigurator;
-import com.vaadin.flow.component.page.ColorScheme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
