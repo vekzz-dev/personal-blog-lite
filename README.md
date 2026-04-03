@@ -75,14 +75,20 @@ Click the **Admin** button in the header or navigate to `/admin/dashboard`. You'
 <img src="assets/home1.png" width="600" alt="Home Page">
 <img src="assets/home2.png" width="600" alt="Home Page">
 
+> **Shows the public blog homepage displaying the list of posts with title, excerpt, and created date.**
+
 ### Post Detail
 
 <img src="assets/post_view1.png" width="600" alt="Post View">
 <img src="assets/post_view2.png" width="600" alt="Post View">
 
+> **Full article view with Markdown content rendered to HTML, showing title, content, and back navigation.**
+
 ### Admin Dashboard
 
 <img src="assets/dashboard_admin.png" width="600" alt="Admin Dashboard">
+
+> **Protected admin area with table of all posts, showing actions to edit or delete each post.**
 
 ### Post Management
 
@@ -90,24 +96,59 @@ Click the **Admin** button in the header or navigate to `/admin/dashboard`. You'
 <img src="assets/edit_post.png" width="600" alt="Edit Post">
 <img src="assets/delete_post.png" width="600" alt="Delete Post">
 
+> **Forms for creating and editing posts with title and Markdown content fields. Delete confirmation dialog shown before removing a post.**
+
 ## Project Structure
 
 ```
-src/main/java/io/vekzzdev/personal_blog_lite/
-├── Main.java                    # Entry point
-├── config/                      # Bootstrap, InstantiatorFactory
-├── model/                       # Domain models (Post)
-├── service/                     # Business logic (PostService, MarkdownService)
-├── repository/                  # Repository interfaces
-│   └── jooq/                    # jOOQ implementations
-├── security/                    # BasicAuthFilter
-├── ui/
-│   ├── components/              # Reusable components (BlogHeader)
-│   └── view/                    # Vaadin views
-│       ├── HomeView.java        # Public: post list
-│       ├── PostDetailView.java  # Public: single post
-│       └── admin/               # Admin views (protected)
-└── generated/jooq/             # jOOQ generated code
+personal-blog-lite/
+├── src/
+│   ├── main/
+│   │   ├── java/io/vekzzdev/personal_blog_lite/
+│   │   │   ├── Main.java                    # Entry point (Jetty launcher)
+│   │   │   ├── config/
+│   │   │   │   ├── Bootstrap.java           # Servlet context listener, DB setup, DI
+│   │   │   │   └── BlogInstantiatorFactory.java  # Vaadin view dependency injection
+│   │   │   ├── model/
+│   │   │   │   └── Post.java                 # Post domain model
+│   │   │   ├── service/
+│   │   │   │   ├── PostService.java          # Post CRUD business logic
+│   │   │   │   └── MarkdownService.java       # Markdown to HTML rendering
+│   │   │   ├── repository/
+│   │   │   │   └── jooq/
+│   │   │   │       └── JooqPostRepository.java  # jOOQ implementation
+│   │   │   ├── security/
+│   │   │   │   └── BasicAuthFilter.java       # HTTP Basic Auth for /admin/*
+│   │   │   ├── ui/
+│   │   │   │   ├── components/
+│   │   │   │   │   └── BlogHeader.java        # Header with admin navigation
+│   │   │   │   └── view/
+│   │   │   │       ├── HomeView.java          # Public: post list
+│   │   │   │       ├── PostDetailView.java    # Public: single post with markdown
+│   │   │   │       └── admin/
+│   │   │   │           ├── AdminDashboardView.java  # Admin: post management table
+│   │   │   │           ├── PostFormView.java         # Admin: edit existing post
+│   │   │   │           └── NewPostView.java          # Admin: create new post
+│   │   │   └── generated/
+│   │   │       └── jooq/                   # Auto-generated jOOQ classes (DO NOT EDIT)
+│   │   └── resources/
+│   │       ├── db/migration/               # Flyway SQL migrations
+│   │       │   ├── V1__initial_schema.sql
+│   │       │   └── V2__insert_initial_data.sql
+│   │       └── logback.xml                 # Logging configuration
+│   └── test/
+│       └── java/io/vekzzdev/personal_blog_lite/
+│           └── service/
+│               ├── PostServiceTest.java    # Unit tests with Mockito
+│               └── MarkdownServiceTest.java # Unit tests
+├── assets/                                 # Project screenshots for README
+├── build.gradle                            # Gradle build configuration
+├── docker-compose.yml                      # Docker Compose (MariaDB + app)
+├── Dockerfile                              # Multi-stage Docker build
+├── .env.example                            # Environment template
+├── LICENSE                                 # MIT License
+├── CHANGELOG.md                            # Version changelog
+└── README.md                               # This file
 ```
 
 ## Environment Variables
